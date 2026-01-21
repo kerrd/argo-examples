@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: nginx-prod
 
 resources:
+  - ../base
   - configmap.yaml
 
 helmCharts:

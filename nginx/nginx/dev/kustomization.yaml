@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: nginx-dev
 
 resources:
+  - ../base
   - configmap.yaml
 
 helmCharts:
