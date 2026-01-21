@@ -9,7 +9,7 @@ replicaCount: 1
 image:
   registry: docker.io
   repository: nginx
-  tag: stable-alpine3.23-perl
+  tag: stable-perl
   pullPolicy: IfNotPresent
 
 # Service configuration
