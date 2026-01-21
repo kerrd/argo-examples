@@ -9,13 +9,28 @@ replicaCount: 1
 image:
   registry: docker.io
   repository: bitnami/nginx
-  tag: 1.27.3
-  pullPolicy: IfNotPresent
+  tag: latest
+  pullPolicy: Always
 
-# Disable init containers that require bash
-sidecarSingleProcessNamespace: false
-containerSecurityContext:
-  enabled: false
+# Override init containers to use correct bash path
+initContainers:
+  - name: preserve-logs-symlinks
+    image: docker.io/bitnami/nginx:latest
+    imagePullPolicy: Always
+    command:
+      - /usr/bin/bash
+      - -ec
+      - |
+        . /opt/bitnami/scripts/liblog.sh
+        . /opt/bitnami/scripts/libfs.sh
+        # Persist logs to /opt/bitnami/nginx/logs
+        if ! is_dir_empty /opt/bitnami/nginx/logs; then
+          cp -r /opt/bitnami/nginx/logs /emptydir/app-logs-dir
+        fi
+    volumeMounts:
+      - name: empty-dir
+        mountPath: /emptydir
+        subPath: app-tmp-dir
 
 # Service configuration
 service:
