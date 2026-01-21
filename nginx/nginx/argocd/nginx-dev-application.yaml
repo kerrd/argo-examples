@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: root-app
+  name: nginx-dev
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -11,10 +11,10 @@ spec:
   source:
     repoURL: https://github.com/dkerr-org/homelab.git
     targetRevision: HEAD
-    path: gitops/apps
+    path: gitops/nginx/dev
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: nginx-dev
   syncPolicy:
     automated:
       prune: true

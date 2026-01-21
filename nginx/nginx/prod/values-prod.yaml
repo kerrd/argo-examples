@@ -1,0 +1,103 @@
+---
+# Nginx Helm Chart Values - Production Environment
+# https://github.com/bitnami/charts/tree/main/bitnami/nginx
+
+# Replica count for production (HA)
+replicaCount: 2
+
+# Image configuration
+image:
+  registry: docker.io
+  repository: bitnami/nginx
+  tag: 1.27.3-debian-12-r0
+  pullPolicy: IfNotPresent
+
+# Service configuration
+service:
+  type: ClusterIP
+  ports:
+    http: 80
+
+# Ingress configuration
+ingress:
+  enabled: true
+  ingressClassName: traefik
+  hostname: nginx.hl.rushbtech.org
+  path: /
+  pathType: Prefix
+  tls: true
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+
+# Custom index.html for prod
+cloneStaticSiteFromGit:
+  enabled: false
+
+# Custom HTML content
+serverBlock: |-
+  server {
+    listen 0.0.0.0:8080;
+    server_name localhost;
+    location / {
+      root /app;
+      index index.html;
+    }
+  }
+
+# Static content
+staticSiteConfigmap: nginx-prod-content
+staticSitePVC: ""
+
+# Resources for production (higher limits)
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 200m
+    memory: 256Mi
+
+# Autoscaling enabled for prod
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPU: 70
+  targetMemory: 80
+
+# Pod disruption budget for HA
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+# Pod affinity for better distribution
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - nginx
+          topologyKey: kubernetes.io/hostname
+
+# Health checks
+livenessProbe:
+  enabled: true
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+  successThreshold: 1
+
+readinessProbe:
+  enabled: true
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+  successThreshold: 1
