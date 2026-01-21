@@ -4,6 +4,9 @@ kind: Kustomization
 
 namespace: nginx-prod
 
+resources:
+  - configmap.yaml
+
 helmCharts:
   - name: nginx
     repo: https://charts.bitnami.com/bitnami
