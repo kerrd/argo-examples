@@ -8,9 +8,14 @@ replicaCount: 1
 # Image configuration
 image:
   registry: docker.io
-  repository: nginx
-  tag: stable-perl
+  repository: bitnami/nginx
+  tag: 1.27.3
   pullPolicy: IfNotPresent
+
+# Disable init containers that require bash
+sidecarSingleProcessNamespace: false
+containerSecurityContext:
+  enabled: false
 
 # Service configuration
 service:
