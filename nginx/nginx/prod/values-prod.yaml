@@ -8,8 +8,8 @@ replicaCount: 2
 # Image configuration
 image:
   registry: docker.io
-  repository: bitnami/nginx
-  tag: 1.27.3-debian-12-r0
+  repository: nginx
+  tag: stable-alpine3.23-perl
   pullPolicy: IfNotPresent
 
 # Service configuration
