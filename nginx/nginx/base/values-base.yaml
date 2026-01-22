@@ -1,9 +1,7 @@
 ---
-# Nginx Helm Chart Values - Development Environment
+# Nginx Helm Chart Values - Base Configuration
 # https://github.com/bitnami/charts/tree/main/bitnami/nginx
-
-# Replica count for development
-replicaCount: 1
+# Shared settings across all environments
 
 # Image configuration
 image:
@@ -38,11 +36,10 @@ service:
   ports:
     http: 80
 
-# Ingress configuration
+# Ingress base configuration
 ingress:
   enabled: true
   ingressClassName: traefik
-  hostname: nginx-dev.hl.rushbtech.org
   path: /
   pathType: Prefix
   tls: true
@@ -50,9 +47,11 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
 
-# Custom index.html for dev
+# Static site configuration
 cloneStaticSiteFromGit:
   enabled: false
+
+staticSitePVC: ""
 
 # Custom HTML content
 serverBlock: |-
@@ -64,23 +63,6 @@ serverBlock: |-
       index index.html;
     }
   }
-
-# Static content
-staticSiteConfigmap: nginx-dev-content
-staticSitePVC: ""
-
-# Resources for development
-resources:
-  limits:
-    cpu: 200m
-    memory: 256Mi
-  requests:
-    cpu: 100m
-    memory: 128Mi
-
-# Autoscaling disabled for dev
-autoscaling:
-  enabled: false
 
 # Health checks
 livenessProbe:
