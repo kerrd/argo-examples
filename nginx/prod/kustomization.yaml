@@ -1,0 +1,19 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: nginx-prod
+
+resources:
+  - ../base
+  - configmap.yaml
+
+helmCharts:
+  - name: nginx
+    repo: https://charts.bitnami.com/bitnami
+    version: 18.2.4
+    releaseName: nginx
+    namespace: nginx-prod
+    valuesFile: values-base.yaml
+    additionalValuesFiles:
+      - values-prod.yaml

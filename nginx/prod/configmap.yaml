@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-prod-content
+  namespace: nginx-prod
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Nginx - Homelab</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          margin: 0;
+          background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+          color: white;
+        }
+        .container {
+          text-align: center;
+        }
+        h1 {
+          font-size: 3em;
+          margin-bottom: 0.2em;
+        }
+        .env {
+          background: rgba(255,255,255,0.2);
+          padding: 10px 20px;
+          border-radius: 5px;
+          display: inline-block;
+          margin-top: 20px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1>🏠 Homelab</h1>
+        <p>Nginx Web Server</p>
+        <div class="env">Production Environment</div>
+      </div>
+    </body>
+    </html>
