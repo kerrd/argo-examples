@@ -8,7 +8,7 @@ data:
     <!DOCTYPE html>
     <html>
     <head>
-      <title>Nginx Dev with auto sync - Homelab</title>
+      <title>Nginx Dev with auto sync, now not in nested nginx dir - Homelab</title>
       <style>
         body {
           font-family: Arial, sans-serif;
