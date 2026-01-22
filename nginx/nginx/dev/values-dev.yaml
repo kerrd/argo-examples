@@ -1,73 +1,16 @@
 ---
 # Nginx Helm Chart Values - Development Environment
-# https://github.com/bitnami/charts/tree/main/bitnami/nginx
+# Environment-specific overrides for base configuration
 
 # Replica count for development
 replicaCount: 1
 
-# Image configuration
-image:
-  registry: docker.io
-  repository: bitnami/nginx
-  tag: latest
-  pullPolicy: Always
-
-# Override init containers to use correct bash path
-initContainers:
-  - name: preserve-logs-symlinks
-    image: docker.io/bitnami/nginx:latest
-    imagePullPolicy: Always
-    command:
-      - /usr/bin/bash
-      - -ec
-      - |
-        . /opt/bitnami/scripts/liblog.sh
-        . /opt/bitnami/scripts/libfs.sh
-        # Persist logs to /opt/bitnami/nginx/logs
-        if ! is_dir_empty /opt/bitnami/nginx/logs; then
-          cp -r /opt/bitnami/nginx/logs /emptydir/app-logs-dir
-        fi
-    volumeMounts:
-      - name: empty-dir
-        mountPath: /emptydir
-        subPath: app-tmp-dir
-
-# Service configuration
-service:
-  type: ClusterIP
-  ports:
-    http: 80
-
-# Ingress configuration
+# Ingress hostname
 ingress:
-  enabled: true
-  ingressClassName: traefik
   hostname: nginx-dev.hl.rushbtech.org
-  path: /
-  pathType: Prefix
-  tls: true
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
 
-# Custom index.html for dev
-cloneStaticSiteFromGit:
-  enabled: false
-
-# Custom HTML content
-serverBlock: |-
-  server {
-    listen 0.0.0.0:8080;
-    server_name localhost;
-    location / {
-      root /app;
-      index index.html;
-    }
-  }
-
-# Static content
+# Static content configmap
 staticSiteConfigmap: nginx-dev-content
-staticSitePVC: ""
 
 # Resources for development
 resources:
@@ -81,20 +24,3 @@ resources:
 # Autoscaling disabled for dev
 autoscaling:
   enabled: false
-
-# Health checks
-livenessProbe:
-  enabled: true
-  initialDelaySeconds: 30
-  periodSeconds: 10
-  timeoutSeconds: 5
-  failureThreshold: 6
-  successThreshold: 1
-
-readinessProbe:
-  enabled: true
-  initialDelaySeconds: 5
-  periodSeconds: 5
-  timeoutSeconds: 3
-  failureThreshold: 3
-  successThreshold: 1
