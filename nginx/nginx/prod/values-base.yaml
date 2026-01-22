@@ -33,6 +33,7 @@ initContainers:
 # Service configuration
 service:
   type: LoadBalancer
+  loadBalancerIP: 10.0.2.102
   ports:
     http: 80
 
