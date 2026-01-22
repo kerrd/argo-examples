@@ -42,7 +42,7 @@ logs:
 
 # Additional arguments
 additionalArguments:
-  - "--certificatesresolvers.letsencrypt.acme.email=your-email@example.com"
+  - "--certificatesresolvers.letsencrypt.acme.email=dkerr@rushbtech.org"
   - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
   - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
 
