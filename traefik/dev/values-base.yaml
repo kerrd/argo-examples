@@ -18,17 +18,20 @@ service:
 ports:
   web:
     port: 80
-    expose: true
+    expose:
+      default: true
     exposedPort: 80
   websecure:
     port: 443
-    expose: true
+    expose:
+      default: true
     exposedPort: 443
     tls:
       enabled: true
   metrics:
     port: 9100
-    expose: false
+    expose:
+      default: false
 
 # Logs configuration
 logs:
