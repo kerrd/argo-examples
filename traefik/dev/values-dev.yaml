@@ -1,0 +1,20 @@
+---
+# Traefik Helm Chart Values - Development Environment
+# Environment-specific overrides for base configuration
+
+# Service LoadBalancer IP for dev
+service:
+  loadBalancerIP: 10.0.2.100
+
+# Let's Encrypt configuration - using production endpoint
+additionalArguments:
+  - "--certificatesresolvers.letsencrypt.acme.caServer=https://acme-v02.api.letsencrypt.org/directory"
+
+# Resources for development
+resources:
+  requests:
+    cpu: 100m
+    memory: 50Mi
+  limits:
+    cpu: 300m
+    memory: 150Mi

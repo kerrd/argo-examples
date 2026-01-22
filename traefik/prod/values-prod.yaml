@@ -1,0 +1,43 @@
+---
+# Traefik Helm Chart Values - Production Environment
+# Environment-specific overrides for base configuration
+
+# Deployment replicas for HA
+deployment:
+  replicas: 2
+
+# Service LoadBalancer IP for prod
+service:
+  loadBalancerIP: 10.0.2.101
+
+# Let's Encrypt configuration - production endpoint
+additionalArguments:
+  - "--certificatesresolvers.letsencrypt.acme.caServer=https://acme-v02.api.letsencrypt.org/directory"
+
+# Resources for production
+resources:
+  requests:
+    cpu: 200m
+    memory: 100Mi
+  limits:
+    cpu: 500m
+    memory: 300Mi
+
+# Pod disruption budget for HA
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+# Pod affinity for better distribution
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - traefik
+          topologyKey: kubernetes.io/hostname
