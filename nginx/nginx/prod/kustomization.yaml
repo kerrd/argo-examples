@@ -14,6 +14,6 @@ helmCharts:
     version: 18.2.4
     releaseName: nginx
     namespace: nginx-prod
-    valuesFile: ../base/values-base.yaml
+    valuesFile: values-base.yaml
     additionalValuesFiles:
       - values-prod.yaml
