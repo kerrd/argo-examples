@@ -40,11 +40,17 @@ logs:
   access:
     enabled: true
 
+# Certificate resolvers
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: dkerr@rushbtech.org
+      storage: /data/acme.json
+      httpChallenge:
+        entryPoint: web
+
 # Additional arguments
-additionalArguments:
-  - "--certificatesresolvers.letsencrypt.acme.email=dkerr@rushbtech.org"
-  - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
-  - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+additionalArguments: []
 
 # Persistent storage for certificates
 persistence:

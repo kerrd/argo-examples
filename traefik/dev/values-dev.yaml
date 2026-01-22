@@ -7,8 +7,10 @@ service:
   loadBalancerIP: 10.0.2.100
 
 # Let's Encrypt configuration - using production endpoint
-additionalArguments:
-  - "--certificatesresolvers.letsencrypt.acme.caServer=https://acme-v02.api.letsencrypt.org/directory"
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      caServer: https://acme-v02.api.letsencrypt.org/directory
 
 # Resources for development
 resources:
