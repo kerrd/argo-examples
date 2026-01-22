@@ -53,6 +53,7 @@ persistence:
   size: 128Mi
   path: /data
   accessMode: ReadWriteOnce
+  storageClass: local-path
 
 # IngressRoute for dashboard
 ingressRoute:
