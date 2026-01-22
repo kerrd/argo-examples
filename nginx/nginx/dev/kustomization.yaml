@@ -14,4 +14,8 @@ helmCharts:
     version: 18.2.4
     releaseName: nginx
     namespace: nginx-dev
-    valuesFile: values-dev.yaml
+    valuesInline:
+      $patch: merge
+    valuesFiles:
+      - ../base/values-base.yaml
+      - values-dev.yaml
