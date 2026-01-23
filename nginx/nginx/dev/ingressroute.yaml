@@ -1,0 +1,17 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nginx
+  namespace: nginx-dev
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`nginx-dev.hl.rushbtech.org`)
+      kind: Rule
+      services:
+        - name: nginx
+          port: 80
+  tls:
+    certResolver: letsencrypt

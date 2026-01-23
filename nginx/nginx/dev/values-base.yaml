@@ -18,10 +18,7 @@ service:
 
 # Ingress base configuration
 ingress:
-  enabled: true
-  ingressClassName: traefik
-  path: /
-  pathType: Prefix
+  enabled: false
 
 # Static site configuration
 cloneStaticSiteFromGit:
