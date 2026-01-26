@@ -5,6 +5,4 @@ kind: Kustomization
 namespace: cert-manager
 
 resources:
-  - cert-manager-crds.yaml
-  - cert-manager-manifests.yaml
-  - secret-cf-token.yaml
+  - letsencrypt-staging.yaml

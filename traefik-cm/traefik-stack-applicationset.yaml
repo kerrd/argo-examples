@@ -12,14 +12,18 @@ spec:
         path: traefik-cm/cert-manager/dev
         namespace: cert-manager
         wave: "1"
+      - name: cert-manager-issuers
+        path: traefik-cm/cert-manager/issuers
+        namespace: cert-manager
+        wave: "2"
       - name: traefik-dev
         path: traefik-cm/traefik/dev
         namespace: traefik
-        wave: "2"
+        wave: "3"
       - name: test-nginx
         path: traefik-cm/test-nginx
         namespace: default
-        wave: "3"
+        wave: "4"
   template:
     metadata:
       name: '{{name}}'
@@ -28,7 +32,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/dkerr64/argo-examples.git
+        repoURL: https://github.com/kerrd/argo-examples.git
         targetRevision: HEAD
         path: '{{path}}'
       destination:
