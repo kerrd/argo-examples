@@ -1,0 +1,48 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: traefik-stack
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      - name: cert-manager-dev
+        path: traefik-cm/cert-manager/dev
+        namespace: cert-manager
+        wave: "1"
+      - name: traefik-dev
+        path: traefik-cm/traefik/dev
+        namespace: traefik
+        wave: "2"
+      - name: test-nginx
+        path: traefik-cm/test-nginx
+        namespace: default
+        wave: "3"
+  template:
+    metadata:
+      name: '{{name}}'
+      annotations:
+        argocd.argoproj.io/sync-wave: '{{wave}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/dkerr64/argo-examples.git
+        targetRevision: HEAD
+        path: '{{path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+        retry:
+          limit: 5
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 3m

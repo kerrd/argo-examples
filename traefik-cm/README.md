@@ -90,34 +90,26 @@ git commit -m "Add Traefik + cert-manager with Let's Encrypt staging"
 git push
 ```
 
-### 2. Deploy cert-manager (first)
+### 2. Deploy ApplicationSet (ArgoCD manages everything)
 
 ```bash
-kubectl apply -f traefik-cm/cert-manager/cert-manager-dev-application.yaml
+kubectl apply -f traefik-cm/traefik-stack-applicationset.yaml
 ```
 
-Wait for cert-manager to be ready:
+This ApplicationSet will deploy in order:
+1. **Wave 1**: cert-manager (with CRDs)
+2. **Wave 2**: Traefik
+3. **Wave 3**: test-nginx
+
+ArgoCD will automatically handle sync order and retries.
+
+### 3. Monitor deployment in ArgoCD UI
+
+Or via CLI:
 
 ```bash
-kubectl wait --for=condition=available --timeout=300s deployment/cert-manager -n cert-manager
-```
-
-### 3. Deploy Traefik
-
-```bash
-kubectl apply -f traefik-cm/traefik/traefik-dev-application.yaml
-```
-
-Wait for Traefik to be ready:
-
-```bash
-kubectl wait --for=condition=available --timeout=300s deployment/traefik -n traefik
-```
-
-### 4. Deploy test nginx application
-
-```bash
-kubectl apply -f traefik-cm/test-nginx/test-nginx-application.yaml
+kubectl get applications -n argocd
+kubectl get applicationset -n argocd traefik-stack
 ```
 
 ## Verification
