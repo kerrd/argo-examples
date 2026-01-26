@@ -1,0 +1,21 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik-dev
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/dkerr64/argo-examples.git
+    targetRevision: HEAD
+    path: traefik-cm/traefik/dev
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: traefik
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
